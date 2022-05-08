@@ -1,10 +1,10 @@
 on: [push]
 
-name: CI
+name: Flock Playground
 
 jobs:
   build_and_test:
-    name: Rust project
+    name: Build, test, fmt and clippy
     runs-on: ubuntu-latest
     steps:
       - name: Install Bevy dependencies
@@ -17,6 +17,8 @@ jobs:
           toolchain: nightly
           override: true
           components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v1
 
       - uses: actions-rs/cargo@v1
         with:
