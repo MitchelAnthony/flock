@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Bevy dependencies
-        run: sudo apt-get install g++ clang pkg-config libx11-dev libasound2-dev libudev-dev
+        run: sudo apt update && sudo apt-get install g++ clang pkg-config libx11-dev libasound2-dev libudev-dev
 
       - uses: actions/checkout@v2
 
