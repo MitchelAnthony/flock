@@ -16,7 +16,7 @@ impl Plugin for FlockGuiPlugin {
 
 mod systems {
     use super::*;
-    use crate::resources::Test;
+    use crate::resources::{ButtonSound, Test};
 
     pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         commands.spawn_bundle(UiCameraBundle::default());
@@ -79,19 +79,40 @@ mod systems {
                     ..default()
                 });
             });
+
+        let sound = asset_server.load("sounds/breakout_collision.ogg");
+        commands.insert_resource(ButtonSound(sound));
     }
 
     pub fn hello_world() {
         println!("hello world!");
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn button_interaction(
-        mut query: Query<&Interaction, (Changed<Interaction>, With<Button>)>,
+        mut query: Query<(&Interaction, &mut UiColor), (Changed<Interaction>, With<Button>)>,
         mut tick_writer: EventWriter<events::Tick>,
+        mut windows: ResMut<Windows>,
+        audio: Res<Audio>,
+        button_sound: Res<ButtonSound>,
     ) {
-        for interaction in query.iter_mut() {
-            if *interaction == Interaction::Clicked {
-                tick_writer.send(events::Tick);
+        let window = windows.primary_mut();
+        for (interaction, mut color) in query.iter_mut() {
+            match interaction {
+                Interaction::Clicked => {
+                    *color = Color::rgb(0.0, 0.5, 0.0).into();
+                    window.set_cursor_icon(CursorIcon::Wait);
+                    tick_writer.send(events::Tick);
+                    audio.play(button_sound.0.clone());
+                }
+                Interaction::Hovered => {
+                    *color = Color::rgb(0.25, 0.25, 0.25).into();
+                    window.set_cursor_icon(CursorIcon::Hand);
+                }
+                Interaction::None => {
+                    *color = Color::rgb(0.15, 0.15, 0.15).into();
+                    window.set_cursor_icon(CursorIcon::Default);
+                }
             }
         }
     }
@@ -117,8 +138,12 @@ mod systems {
 }
 
 mod resources {
+    use super::*;
+
     #[derive(Debug)]
     pub struct Test(pub usize);
+
+    pub struct ButtonSound(pub Handle<AudioSource>);
 }
 
 mod components {
