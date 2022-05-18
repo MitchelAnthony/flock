@@ -1,5 +1,6 @@
 use bevy::{input::system::exit_on_esc_system, prelude::*};
 use flock_gui_plugin::FlockGuiPlugin;
+use flock_state_plugin::{AppState, FlockStatePlugin};
 
 fn main() {
     App::new()
@@ -15,10 +16,20 @@ fn main() {
         .add_startup_system(setup)
         .add_plugins(DefaultPlugins)
         .add_plugin(FlockGuiPlugin)
+        .add_plugin(FlockStatePlugin)
         .add_system(exit_on_esc_system)
+        .add_system_set(SystemSet::on_enter(AppState::Main).with_system(transition_settings))
         .run();
 }
 
 fn setup(mut commands: Commands) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+}
+
+fn transition_settings(mut app_state: ResMut<State<AppState>>) {
+    println!("Switching to Settings state.");
+
+    if app_state.set(AppState::Settings).is_err() {
+        println!("Could not switch state. State is {:?}", app_state.current());
+    }
 }

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use flock_state_plugin::AppState;
 
 pub struct FlockGuiPlugin;
 
@@ -7,7 +8,6 @@ impl Plugin for FlockGuiPlugin {
         app.add_event::<events::Tick>()
             .insert_resource(resources::Test(0))
             .add_startup_system(systems::setup)
-            .add_startup_system(systems::hello_world)
             .add_system(systems::show_count)
             .add_system(systems::handle_tick)
             .add_system(systems::button_interaction);
@@ -84,10 +84,6 @@ mod systems {
         commands.insert_resource(ButtonSound(sound));
     }
 
-    pub fn hello_world() {
-        println!("hello world!");
-    }
-
     #[allow(clippy::type_complexity)]
     pub fn button_interaction(
         mut query: Query<(&Interaction, &mut UiColor), (Changed<Interaction>, With<Button>)>,
@@ -130,9 +126,18 @@ mod systems {
     pub fn handle_tick(
         mut tick_reader: EventReader<events::Tick>,
         mut test_resource: ResMut<Test>,
+        mut app_state: ResMut<State<AppState>>,
     ) {
         for _ in tick_reader.iter() {
             test_resource.0 += 1;
+
+            if test_resource.0 > 0 && test_resource.0 % 10 == 0 {
+                println!("Switching to Main state.");
+
+                if app_state.set(AppState::Main).is_err() {
+                    println!("Could not switch state. State is {:?}", app_state.current());
+                }
+            }
         }
     }
 }

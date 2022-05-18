@@ -178,6 +178,7 @@ version = "0.1.0"
 dependencies = [
  "bevy 0.7.0",
  "flock_gui_plugin",
+ "flock_state_plugin",
 ]
 
 [[package]]
@@ -1330,6 +1331,14 @@ checksum = "279fb028e20b3c4c320317955b77c5e0c9701f05a1d309905d6fc702cdc5053e"
 
 [[package]]
 name = "flock_gui_plugin"
+version = "0.1.0"
+dependencies = [
+ "bevy 0.7.0",
+ "flock_state_plugin",
+]
+
+[[package]]
+name = "flock_state_plugin"
 version = "0.1.0"
 dependencies = [
  "bevy 0.7.0",
