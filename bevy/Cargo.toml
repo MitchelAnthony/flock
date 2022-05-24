@@ -9,3 +9,4 @@ edition = "2021"
 bevy = { version = "0.7", features = ["dynamic"] }
 flock_gui_plugin = { path = "../flock_gui_plugin" }
 flock_state_plugin = { path = "../flock_state_plugin" }
+flock_tilemap_plugin = { path = "../flock_tilemap_plugin" }

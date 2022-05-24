@@ -1,6 +1,7 @@
 use bevy::{input::system::exit_on_esc_system, prelude::*};
 use flock_gui_plugin::FlockGuiPlugin;
 use flock_state_plugin::{AppState, FlockStatePlugin};
+use flock_tilemap_plugin::FlockTilemapPlugin;
 
 fn main() {
     App::new()
@@ -17,6 +18,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(FlockGuiPlugin)
         .add_plugin(FlockStatePlugin)
+        .add_plugin(FlockTilemapPlugin)
         .add_system(exit_on_esc_system)
         .add_system_set(SystemSet::on_enter(AppState::Main).with_system(transition_settings))
         .run();

@@ -179,6 +179,7 @@ dependencies = [
  "bevy 0.7.0",
  "flock_gui_plugin",
  "flock_state_plugin",
+ "flock_tilemap_plugin",
 ]
 
 [[package]]
@@ -381,6 +382,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c68fefad7aa09f9833d198c0fd1d9ebe58bf9ab3abf91cf912e4f5585227fb82"
+dependencies = [
+ "bevy 0.7.0",
+ "bytemuck",
+ "log",
+ "regex",
 ]
 
 [[package]]
@@ -1342,6 +1355,14 @@ name = "flock_state_plugin"
 version = "0.1.0"
 dependencies = [
  "bevy 0.7.0",
+]
+
+[[package]]
+name = "flock_tilemap_plugin"
+version = "0.1.0"
+dependencies = [
+ "bevy 0.7.0",
+ "bevy_ecs_tilemap",
 ]
 
 [[package]]
