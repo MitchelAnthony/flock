@@ -3,6 +3,9 @@
 members = [
 	"bevy",
 	"flock_gui_plugin",
+	"flock_player_plugin",
+	"flock_state_plugin",
+	"flock_tilemap_plugin",
 ]
 
 resolver = "2" # Important! wgpu/Bevy needs this!

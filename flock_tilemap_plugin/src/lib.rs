@@ -5,8 +5,7 @@ pub struct FlockTilemapPlugin;
 
 impl Plugin for FlockTilemapPlugin {
     fn build(&self, app: &mut App) {
-        app
-            .add_startup_system(setup)
+        app.add_startup_system(setup)
             .add_plugin(TilemapPlugin)
             .add_system(set_texture_filters_to_nearest);
     }
@@ -16,7 +15,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut map_query: 
     let texture_handle = asset_server.load("tiles.png");
 
     // Create map entity and component:
-    let map_entity = commands.spawn().id();
+    let map_entity = commands.spawn().insert(Name::new("Map")).id();
     let mut map = Map::new(0u16, map_entity);
 
     // Creates a new layer builder with a layer entity.
@@ -33,8 +32,28 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut map_query: 
     );
 
     layer_builder.set_all(TileBundle::default());
-    layer_builder.fill(TilePos(0, 0), TilePos(8, 8), TileBundle { tile: Tile { texture_index: 1, ..default() }, ..default() });
-    layer_builder.fill(TilePos(8, 8), TilePos(16, 16), TileBundle { tile: Tile { texture_index: 2, ..default() }, ..default() });
+    layer_builder.fill(
+        TilePos(0, 0),
+        TilePos(8, 8),
+        TileBundle {
+            tile: Tile {
+                texture_index: 1,
+                ..default()
+            },
+            ..default()
+        },
+    );
+    layer_builder.fill(
+        TilePos(8, 8),
+        TilePos(16, 16),
+        TileBundle {
+            tile: Tile {
+                texture_index: 2,
+                ..default()
+            },
+            ..default()
+        },
+    );
 
     // Builds the layer.
     // Note: Once this is called you can no longer edit the layer until a hard sync in bevy.
